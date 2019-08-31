@@ -1,4 +1,4 @@
-package com.ruczajsoftware.workoutrival.models;
+package com.ruczajsoftware.workoutrival.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

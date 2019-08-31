@@ -1,13 +1,17 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.2'
+    }
+}
+
 plugins {
     id 'org.springframework.boot' version '2.1.7.RELEASE'
     id 'java'
 }
-
-apply plugin: 'io.spring.dependency-management'
-
-group = 'com.ruczajsoftware'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
 
 configurations {
     developmentOnly
@@ -19,15 +23,39 @@ configurations {
     }
 }
 
-repositories {
-    mavenCentral()
-}
+allprojects {
 
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    group = 'com.ruczajsoftware'
+    version = '0.0.1'
+    sourceCompatibility = '11'
+    targetCompatibility = '11'
+
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.junit.platform.gradle.plugin'
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+        annotationProcessor 'org.projectlombok:lombok'
+
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation "org.junit.jupiter:junit-jupiter-api:5.5.1"
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter:5.5.1'
+    }
+
+    test {
+        useJUnitPlatform {
+            includeEngines 'junit-jupiter'
+        }
+    }
+
+    bootJar.enabled = false
+    jar.enabled = true
 }

@@ -1,1 +1,4 @@
 rootProject.name = 'workout-rival'
+
+include 'rest-service'
+include 'database-service'
