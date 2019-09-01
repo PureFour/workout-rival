@@ -31,9 +31,12 @@ allprojects {
     targetCompatibility = '11'
 
     apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.springframework.boot'
     apply plugin: 'org.junit.platform.gradle.plugin'
     apply plugin: 'java'
     apply plugin: 'idea'
+    apply plugin: 'checkstyle'
+    apply plugin: 'pmd'
 
     repositories {
         mavenCentral()
@@ -54,6 +57,25 @@ allprojects {
         useJUnitPlatform {
             includeEngines 'junit-jupiter'
         }
+    }
+
+    checkstyle {
+        toolVersion '7.8.1'
+        configFile file("../config/codestyle/checkstyle.xml")
+        checkstyleMain {
+            source ='src/main/java'
+        }
+        checkstyleTest {
+            source ='src/test/java'
+        }
+        ignoreFailures = false
+    }
+
+    pmd {
+        ignoreFailures = true
+        sourceSets = [sourceSets.main]
+        reportsDir = file("$project.buildDir/reports/pmd")
+        ruleSetFiles = files("../config/pmd/ruleset.xml")
     }
 
     bootJar.enabled = false

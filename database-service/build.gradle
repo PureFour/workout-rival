@@ -1,9 +1,2 @@
-plugins {
-    id 'org.springframework.boot'
-    id 'java'
-}
-
-bootJar.enabled = false
-
 dependencies {
 }
