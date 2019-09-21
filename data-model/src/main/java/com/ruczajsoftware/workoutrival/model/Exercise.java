@@ -1,18 +1,18 @@
 package com.ruczajsoftware.workoutrival.model;
 
-import java.util.Date;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
-public class Training {
+@NoArgsConstructor
+class Exercise {
 
-    private String trainingName;
-    private List<Exercise> exercises;
-    private Date trainingDate;
+	private String exerciseName;
+	private List<GymSet> gymSets;
 }

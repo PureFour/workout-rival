@@ -4,12 +4,12 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.2'
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.2.0'
     }
 }
 
 plugins {
-    id 'org.springframework.boot' version '2.1.7.RELEASE'
+    id 'org.springframework.boot' version '2.1.8.RELEASE'
     id 'java'
 }
 
@@ -26,7 +26,7 @@ configurations {
 allprojects {
 
     group = 'com.ruczajsoftware'
-    version = '0.0.1'
+    version = '1.0.0'
     sourceCompatibility = '11'
     targetCompatibility = '11'
 
@@ -35,8 +35,6 @@ allprojects {
     apply plugin: 'org.junit.platform.gradle.plugin'
     apply plugin: 'java'
     apply plugin: 'idea'
-    apply plugin: 'checkstyle'
-    apply plugin: 'pmd'
 
     repositories {
         mavenCentral()
@@ -44,6 +42,9 @@ allprojects {
     }
 
     dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'com.arangodb:arangodb-spring-data:2.3.2'
+
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
         annotationProcessor 'org.projectlombok:lombok'
@@ -57,25 +58,6 @@ allprojects {
         useJUnitPlatform {
             includeEngines 'junit-jupiter'
         }
-    }
-
-    checkstyle {
-        toolVersion '7.8.1'
-        configFile file("../config/codestyle/checkstyle.xml")
-        checkstyleMain {
-            source ='src/main/java'
-        }
-        checkstyleTest {
-            source ='src/test/java'
-        }
-        ignoreFailures = false
-    }
-
-    pmd {
-        ignoreFailures = true
-        sourceSets = [sourceSets.main]
-        reportsDir = file("$project.buildDir/reports/pmd")
-        ruleSetFiles = files("../config/pmd/ruleset.xml")
     }
 
     bootJar.enabled = false
