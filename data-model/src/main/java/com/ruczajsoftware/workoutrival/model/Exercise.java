@@ -2,6 +2,7 @@ package com.ruczajsoftware.workoutrival.model;
 
 import java.util.List;
 
+import com.arangodb.springframework.annotation.Document;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-class Exercise {
+@Document("Exercises")
+public class Exercise {
 
 	private String exerciseName;
 	private List<GymSet> gymSets;

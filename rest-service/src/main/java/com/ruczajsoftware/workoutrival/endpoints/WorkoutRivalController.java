@@ -1,5 +1,6 @@
 package com.ruczajsoftware.workoutrival.endpoints;
 
+import com.ruczajsoftware.workoutrival.model.Exercise;
 import com.ruczajsoftware.workoutrival.model.Training;
 import com.ruczajsoftware.workoutrival.service.DatabaseService;
 import io.swagger.annotations.ApiOperation;
@@ -42,5 +43,15 @@ public class WorkoutRivalController {
 	@PostMapping("/trainings")
 	public void postTraining(@RequestBody Training training) {
 		databaseService.addTraining(training);
+	}
+
+	@ApiOperation(value = "Add exercise")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Exercise added!")
+	})
+
+	@PostMapping("/exercises")
+	public void postTraining(@RequestBody Exercise exercise) {
+		databaseService.addExercise(exercise);
 	}
 }
