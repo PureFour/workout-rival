@@ -1,0 +1,7 @@
+spring:
+  data:
+    arangodb:
+      database: WorkoutRivalDB
+      username: root
+      password: root
+      port: 8529
