@@ -3,3 +3,5 @@ rootProject.name = 'workout-rival'
 include 'rest-service'
 include 'database-service'
 include 'data-model'
+include 'authorization-service'
+

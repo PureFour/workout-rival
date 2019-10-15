@@ -4,4 +4,5 @@ dependencies {
     implementation 'io.swagger.core.v3:swagger-annotations:2.0.9'
     implementation(project(":database-service"))
     implementation(project(":data-model"))
+    implementation(project(":authorization-service"))
 }
