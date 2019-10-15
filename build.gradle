@@ -43,7 +43,7 @@ allprojects {
 
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter-web'
-        implementation 'com.arangodb:arangodb-spring-data:2.3.2'
+        implementation 'com.arangodb:arangodb-spring-data:3.2.3'
 
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
