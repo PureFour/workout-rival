@@ -28,7 +28,8 @@ public class DatabaseService {
 
 	public User getUserByLogin(String login){
 		return userRepository.findByLogin(login).isPresent() ? userRepository.findByLogin(login).get() : new User("","","") ;
-	};
+	}
+
 	public void addExercise(Exercise exercise) {
 		exerciseRepository.save(exercise);
 	}

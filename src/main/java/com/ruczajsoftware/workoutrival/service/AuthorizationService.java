@@ -1,4 +1,4 @@
-package com.ruczajsoftware.workoutrival;
+package com.ruczajsoftware.workoutrival.service;
 
 import com.ruczajsoftware.workoutrival.exceptions.UnAuthorizedException;
 import com.ruczajsoftware.workoutrival.exceptions.UserNotFoundException;

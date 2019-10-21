@@ -1,11 +1,11 @@
 package com.ruczajsoftware.workoutrival.endpoints;
 
-import com.ruczajsoftware.workoutrival.AuthorizationService;
 import com.ruczajsoftware.workoutrival.exceptions.UnAuthorizedException;
 import com.ruczajsoftware.workoutrival.exceptions.UserNotFoundException;
 import com.ruczajsoftware.workoutrival.model.Exercise;
 import com.ruczajsoftware.workoutrival.model.Training;
 import com.ruczajsoftware.workoutrival.model.User;
+import com.ruczajsoftware.workoutrival.service.AuthorizationService;
 import com.ruczajsoftware.workoutrival.service.DatabaseService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
