@@ -1,5 +1,10 @@
 package com.ruczajsoftware.workoutrival.service;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.Optional;
+
 import com.ruczajsoftware.workoutrival.model.Exercise;
 import com.ruczajsoftware.workoutrival.model.Training;
 import com.ruczajsoftware.workoutrival.model.User;
@@ -24,10 +29,15 @@ public class DatabaseService {
 	public void addTraining(Training training) {
 		trainingRepository.save(training);
 	}
+	public Training getTrainingByTrainingName(String trainingName){
+		Optional<Training> training = trainingRepository.findTrainingByTrainingName(trainingName);
+		return training.orElseGet(() -> new Training("brrrrrrrrrrrrrak", new ArrayList<>(), new Date()));
+	}
 	public void addUser(User user) { userRepository.save(user); }
 
 	public User getUserByLogin(String login){
-		return userRepository.findByLogin(login).isPresent() ? userRepository.findByLogin(login).get() : new User("","","") ;
+		Optional<User> user = userRepository.findByLogin(login);
+		return user.orElseGet(() -> new User("", "", ""));
 	}
 
 	public void addExercise(Exercise exercise) {

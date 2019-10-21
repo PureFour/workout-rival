@@ -1,5 +1,7 @@
 package com.ruczajsoftware.workoutrival.endpoints;
 
+import java.util.Optional;
+
 import com.ruczajsoftware.workoutrival.exceptions.UnAuthorizedException;
 import com.ruczajsoftware.workoutrival.exceptions.UserNotFoundException;
 import com.ruczajsoftware.workoutrival.model.Exercise;
@@ -50,6 +52,16 @@ public class WorkoutRivalController {
 	@PostMapping("/trainings")
 	public void postTraining(@RequestBody Training training) {
 		databaseService.addTraining(training);
+	}
+
+	@ApiOperation(value = "Got Krening!")
+	@ApiResponses(value = {
+		@ApiResponse(code = 200, message = "Exercise added!")
+	})
+	@GetMapping("/trainings")
+	public ResponseEntity<Training> getTrainingByTrainingName(@RequestParam String trainingName)
+	{
+		return ResponseEntity.ok(databaseService.getTrainingByTrainingName(trainingName));
 	}
 
 	@ApiOperation(value = "Add exercise")
