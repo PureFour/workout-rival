@@ -3,10 +3,10 @@ package com.ruczajsoftware.workoutrival.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class UserNotFoundException extends Exception {
+@ResponseStatus(HttpStatus.CONFLICT)
+public class EntityConflictException extends Exception {
 
-	public UserNotFoundException(String message) {
+	public EntityConflictException(String message) {
 		super(message);
 	}
 }
