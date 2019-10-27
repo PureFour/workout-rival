@@ -7,4 +7,6 @@ import com.ruczajsoftware.workoutrival.model.User;
 
 public interface UserRepository extends ArangoRepository<User, Integer> {
 	Optional<User> findByLogin(String login);
+
+	void deleteUserByLogin(String login);
 }

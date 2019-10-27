@@ -13,6 +13,8 @@ services:
 
   arangodb:
     image: arangodb:latest
+    container_name: "workout-rival-arangodb"
+    restart: always
     environment:
       ARANGO_ROOT_PASSWORD: "root"
     ports:
