@@ -14,20 +14,16 @@ import com.ruczajsoftware.workoutrival.model.User;
 import com.ruczajsoftware.workoutrival.repositories.ExerciseRepository;
 import com.ruczajsoftware.workoutrival.repositories.TrainingRepository;
 import com.ruczajsoftware.workoutrival.repositories.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class DatabaseService {
 
 	private TrainingRepository trainingRepository;
 	private ExerciseRepository exerciseRepository;
 	private UserRepository userRepository;
-
-	public DatabaseService(TrainingRepository trainingRepository, ExerciseRepository exerciseRepository, UserRepository userRepository) {
-		this.trainingRepository = trainingRepository;
-		this.exerciseRepository = exerciseRepository;
-		this.userRepository = userRepository;
-	}
 
 	public void deleteTrainingByTrainingName(String trainingName) throws EntityNotFoundException {
 		if(trainingRepository.findTrainingByTrainingName(trainingName).isEmpty()) {
