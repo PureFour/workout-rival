@@ -1,19 +1,20 @@
 version: "3"
 services:
-  workout-rival-service:
-    image: workout-rival-service:latest
-    links:
-      - arangodb
-    depends_on:
-      - arangodb
-    environment:
-      ARANGO_ROOT_PASSWORD: "root"
-    ports:
-      - "8080:8080"
-
   arangodb:
     image: arangodb:latest
     environment:
       ARANGO_ROOT_PASSWORD: "root"
     ports:
       - "8529:8529"
+
+  workout-rival-service:
+    image: workout-rival-service:latest
+    depends_on:
+      - arangodb
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      ARANGO_ROOT_PASSWORD: "root"
+    command: ["-c", "/opt/wait-for.sh arangodb:8529 && java -jar workoutRival.jar"]
+    entrypoint: ["/bin/sh"]
+    ports:
+      - "8080:8080"
