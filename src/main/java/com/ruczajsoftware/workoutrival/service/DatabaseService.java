@@ -1,11 +1,5 @@
 package com.ruczajsoftware.workoutrival.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import com.ruczajsoftware.workoutrival.exceptions.EntityConflictException;
 import com.ruczajsoftware.workoutrival.exceptions.EntityNotFoundException;
 import com.ruczajsoftware.workoutrival.model.Exercise;
@@ -17,6 +11,12 @@ import com.ruczajsoftware.workoutrival.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 @Service
 @AllArgsConstructor
 public class DatabaseService {
@@ -26,7 +26,7 @@ public class DatabaseService {
 	private UserRepository userRepository;
 
 	public void deleteTrainingByTrainingName(String trainingName) throws EntityNotFoundException {
-		if(trainingRepository.findTrainingByTrainingName(trainingName).isEmpty()) {
+		if (trainingRepository.findTrainingByTrainingName(trainingName).isEmpty()) {
 			throw new EntityNotFoundException("Training not found!");
 		}
 		trainingRepository.deleteByTrainingName(trainingName);
@@ -45,7 +45,6 @@ public class DatabaseService {
 			throw new EntityConflictException("Training exists in user trainings!");
 		}
 
-//		update user entry
 		userRepository.deleteUserByLogin(userLogin);
 		user.getTrainings().add(trainingFromDB.isPresent() ? trainingFromDB.get().getUuid() : training.getUuid());
 		userRepository.save(user);
@@ -59,9 +58,9 @@ public class DatabaseService {
 	public List<Training> getUserTrainings(String userLogin) throws EntityNotFoundException {
 		User user = this.getUserByLogin(userLogin);
 		return user.getTrainings().stream()
-			.filter(uuid -> trainingRepository.findByUuid(uuid).isPresent())
-			.map(uuid -> trainingRepository.findByUuid(uuid).get())
-			.collect(Collectors.toList());
+				.filter(uuid -> trainingRepository.findByUuid(uuid).isPresent())
+				.map(uuid -> trainingRepository.findByUuid(uuid).get())
+				.collect(Collectors.toList());
 	}
 
 	public void addUser(User user) throws EntityConflictException {
@@ -78,7 +77,7 @@ public class DatabaseService {
 	}
 
 	public void deleteUserByLogin(String login) throws EntityNotFoundException {
-		if(userRepository.findByLogin(login).isEmpty()) {
+		if (userRepository.findByLogin(login).isEmpty()) {
 			throw new EntityNotFoundException("User not found!");
 		}
 		userRepository.deleteUserByLogin(login);
@@ -86,7 +85,7 @@ public class DatabaseService {
 
 	public void updateUserPassword(String login, String password) throws EntityNotFoundException, EntityConflictException {
 		User user = this.getUserByLogin(login);
-		if(user.getPassword().equals(password)) {
+		if (user.getPassword().equals(password)) {
 			throw new EntityConflictException("Password must be different!");
 		}
 		user.setPassword(password);
@@ -96,7 +95,7 @@ public class DatabaseService {
 
 	public void updateUserEmail(String login, String email) throws EntityNotFoundException, EntityConflictException {
 		User user = this.getUserByLogin(login);
-		if(user.getEmail().equals(email)) {
+		if (user.getEmail().equals(email)) {
 			throw new EntityConflictException("Email must be different!");
 		}
 		user.setEmail(email);
