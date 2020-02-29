@@ -1,0 +1,1 @@
+web: java -jar build/libs/workout-rival-1.0.0.jar
