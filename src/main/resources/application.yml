@@ -1,3 +1,7 @@
+spring:
+  application:
+    name: WorkoutRival
+
 arangodb:
   host: localhost
   port: 8529
@@ -6,6 +10,22 @@ arangodb:
 spring:
   profiles:
     active: docker
+  boot:
+    admin:
+      client:
+        url: [http://localhost:8080/admin]
+      context-path: /admin
+
+management:
+  server:
+    port: 8080
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
 arangodb:
   host: arangodb
