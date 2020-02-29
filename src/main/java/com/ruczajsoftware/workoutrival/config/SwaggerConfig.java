@@ -20,6 +20,8 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(Predicates.not(PathSelectors.regex("/error.*")))
+                .paths(Predicates.not(PathSelectors.regex("/admin.*")))
+                .paths(Predicates.not(PathSelectors.regex("/actuator.*")))
                 .build();
     }
 }
