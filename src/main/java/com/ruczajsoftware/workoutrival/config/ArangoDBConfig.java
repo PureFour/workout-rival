@@ -1,6 +1,7 @@
 package com.ruczajsoftware.workoutrival.config;
 
 import com.arangodb.ArangoDB;
+import com.arangodb.ArangoDatabase;
 import com.arangodb.entity.CollectionEntity;
 import com.arangodb.springframework.annotation.EnableArangoRepositories;
 import com.arangodb.springframework.config.ArangoConfiguration;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,7 +19,7 @@ import java.util.stream.Collectors;
 public class ArangoDBConfig implements ArangoConfiguration {
 
     private static final String DB_NAME = "workout-rival-db";
-    private static final Set<String> COLLECTIONS = Set.of("Users", "Exercises");
+    private static final Set<String> COLLECTIONS = Set.of("Users", "Exercises", "Trainings");
 
     @Value("${arangodb.host}")
     private String host;
@@ -40,21 +42,26 @@ public class ArangoDBConfig implements ArangoConfiguration {
     }
 
     @PostConstruct
-    public void initCollections() {
+    public void initDatabase() {
         ArangoDB arangoDB = arango().build();
         if (!arangoDB.getDatabases().contains(DB_NAME)) {
             arangoDB.createDatabase(DB_NAME);
         }
-        System.out.println("Databases");
-        arangoDB.getDatabases().forEach(System.out::println);
+        ArangoDatabase database = arangoDB.db(DB_NAME);
+        initCollections(database);
+    }
+
+    private void initCollections(ArangoDatabase database) {
+        final List<String> dbCollectionsNames = database.getCollections().stream()
+                .map(CollectionEntity::getName)
+                .collect(Collectors.toList());
+
         COLLECTIONS.forEach(
-        		s -> {
-        			if (!arangoDB.db(DB_NAME).getCollections().stream().map(CollectionEntity::getName).collect(Collectors.toList()).contains(s)) {
-						arangoDB.db(DB_NAME).createCollection(s);
-					}
-				}
-		);
-		System.out.println("Collections");
-		arangoDB.db(DB_NAME).getCollections().forEach(collectionEntity -> System.out.println(collectionEntity.getName()));
+                collectionName -> {
+                    if (!dbCollectionsNames.contains(collectionName)) {
+                        database.createCollection(collectionName);
+                    }
+                }
+        );
     }
 }
