@@ -61,7 +61,7 @@ public class UserController {
             @ApiResponse(code = 409, message = "Given email is the same!", response = EntityConflictException.class),
     })
     @PutMapping("/email")
-    public void updateUserEmail(@RequestParam String login, @RequestParam String email) throws EntityNotFoundException, EntityConflictException {
+    public void updateUserEmail(@RequestParam String login, @RequestParam(name="New email") String email) throws EntityNotFoundException, EntityConflictException {
         databaseService.updateUserEmail(login, email);
     }
 
