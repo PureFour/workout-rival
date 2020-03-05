@@ -13,8 +13,12 @@ spring:
   boot:
     admin:
       client:
-        url: [http://localhost:8080/admin]
-      context-path: /admin
+        url: [http://admin:1111]
+        auto-registration: true
+        username: admin
+        password: admin
+        instance:
+          prefer-ip: true
 
 management:
   server:
