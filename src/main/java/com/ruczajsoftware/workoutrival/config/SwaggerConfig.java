@@ -16,7 +16,8 @@ public class SwaggerConfig {
     @Bean
     public Docket removeDefaultErrorSwaggerEndpoint() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(new ApiInfo("WorkoutRival service API documentation", null, null, null, null, null, null))
+                .apiInfo(new ApiInfo("WorkoutRival service API documentation",
+                        null, null, null, null, null, null))
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(Predicates.not(PathSelectors.regex("/error.*")))
