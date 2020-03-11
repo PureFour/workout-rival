@@ -1,5 +1,7 @@
 package com.ruczajsoftware.workoutrival.model;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,10 +9,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-class GymSet {
+@AllArgsConstructor
+public class PerformedTraining {
 
-    private int reps;
-    private double weight;
+	private TrainingModel training;
+	private Date trainingDate;
+
 }

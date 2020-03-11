@@ -5,13 +5,13 @@ import com.arangodb.ArangoDatabase;
 import com.arangodb.entity.CollectionEntity;
 import com.arangodb.springframework.annotation.EnableArangoRepositories;
 import com.arangodb.springframework.config.ArangoConfiguration;
+import com.ruczajsoftware.workoutrival.model.DB_COLLECTIONS;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 public class ArangoDBConfig implements ArangoConfiguration {
 
     private static final String DB_NAME = "workout-rival-db";
-    private static final Set<String> COLLECTIONS = Set.of("Users", "Exercises", "Trainings");
 
     @Value("${arangodb.host}")
     private String host;
@@ -56,7 +55,7 @@ public class ArangoDBConfig implements ArangoConfiguration {
                 .map(CollectionEntity::getName)
                 .collect(Collectors.toList());
 
-        COLLECTIONS.forEach(
+        DB_COLLECTIONS.getValues().forEach(
                 collectionName -> {
                     if (!dbCollectionsNames.contains(collectionName)) {
                         database.createCollection(collectionName);
