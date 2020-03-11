@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class ArangoDBConfig implements ArangoConfiguration {
 
     private static final String DB_NAME = "workout-rival-db";
-    private static final Set<String> COLLECTIONS = Set.of("Users", "Exercises", "Trainings");
+    private static final Set<String> COLLECTIONS = Set.of("Users", "Exercises", "TrainingModels", "TrainingHistory");
 
     @Value("${arangodb.host}")
     private String host;

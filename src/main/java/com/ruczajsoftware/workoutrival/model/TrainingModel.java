@@ -1,5 +1,6 @@
 package com.ruczajsoftware.workoutrival.model;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,15 +15,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document("Users")
-public class User {
-
-	private String login;
-	private String email;
-	private String password;
-	private PersonalData personalData;
-	private List<BodyMeasurement> bodyMeasurements;
-	private List<TrainingModel> definedTrainings;
-	private List<TrainingPlan> trainingPlans;
-
+@Document("TrainingModels")
+public class TrainingModel {
+	@JsonIgnore
+	private UUID uuid;
+	private String trainingName;
+	private List<Exercise> exercises;
+	private Date trainingDate;
 }
