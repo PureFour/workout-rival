@@ -1,4 +1,4 @@
-package com.ruczajsoftware.workoutrival.model;
+package com.ruczajsoftware.workoutrival.model.database;
 
 import java.util.List;
 

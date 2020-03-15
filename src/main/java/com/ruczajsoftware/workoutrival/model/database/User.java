@@ -1,4 +1,4 @@
-package com.ruczajsoftware.workoutrival.model;
+package com.ruczajsoftware.workoutrival.model.database;
 
 import com.arangodb.springframework.annotation.Document;
 import lombok.AllArgsConstructor;
@@ -15,12 +15,11 @@ import java.util.List;
 @Document("Users")
 public class User {
 
-	private String login;
-	private String email;
+	private String username;
 	private String password;
+	private String email;
 	private PersonalData personalData;
 	private List<BodyMeasurement> bodyMeasurements;
 	private List<TrainingModel> definedTrainings;
 	private List<TrainingPlan> trainingPlans;
-
 }

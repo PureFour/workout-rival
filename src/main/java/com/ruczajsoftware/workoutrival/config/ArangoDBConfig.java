@@ -5,7 +5,7 @@ import com.arangodb.ArangoDatabase;
 import com.arangodb.entity.CollectionEntity;
 import com.arangodb.springframework.annotation.EnableArangoRepositories;
 import com.arangodb.springframework.config.ArangoConfiguration;
-import com.ruczajsoftware.workoutrival.model.DB_COLLECTIONS;
+import com.ruczajsoftware.workoutrival.model.database.DbCollections;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,7 +55,7 @@ public class ArangoDBConfig implements ArangoConfiguration {
                 .map(CollectionEntity::getName)
                 .collect(Collectors.toList());
 
-        DB_COLLECTIONS.getValues().forEach(
+        DbCollections.getValues().forEach(
                 collectionName -> {
                     if (!dbCollectionsNames.contains(collectionName)) {
                         database.createCollection(collectionName);
