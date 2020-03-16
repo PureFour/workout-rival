@@ -1,6 +1,4 @@
-package com.ruczajsoftware.workoutrival.model;
-
-import java.util.Date;
+package com.ruczajsoftware.workoutrival.model.authentication;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,9 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PerformedTraining {
+public class AuthenticationRequest {
 
-	private TrainingModel training;
-	private Date trainingDate;
-
+    private String userLogin;
+    private String userPassword;
 }

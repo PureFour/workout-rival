@@ -16,6 +16,8 @@ services:
 
   arangodb:
     image: arangodb:latest
+    restart:
+      always
     environment:
       ARANGO_ROOT_PASSWORD: "root"
     ports:

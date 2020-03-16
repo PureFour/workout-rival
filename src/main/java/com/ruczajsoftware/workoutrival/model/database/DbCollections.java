@@ -1,4 +1,4 @@
-package com.ruczajsoftware.workoutrival.model;
+package com.ruczajsoftware.workoutrival.model.database;
 
 import lombok.Getter;
 
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public enum DB_COLLECTIONS {
+public enum DbCollections {
     USERS("Users"),
     EXERCISES("Exercises"),
     TRAINING_MODELS("TrainingModels"),
@@ -15,13 +15,13 @@ public enum DB_COLLECTIONS {
     @Getter
     private String collectionName;
 
-    DB_COLLECTIONS(String collectionName) {
+    DbCollections(String collectionName) {
         this.collectionName = collectionName;
     }
 
     public static List<String> getValues() {
-        return Stream.of(DB_COLLECTIONS.values())
-                .map(DB_COLLECTIONS::getCollectionName)
+        return Stream.of(DbCollections.values())
+                .map(DbCollections::getCollectionName)
                 .collect(Collectors.toList());
     }
 }

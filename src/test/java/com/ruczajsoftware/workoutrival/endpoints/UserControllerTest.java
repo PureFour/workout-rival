@@ -1,24 +1,28 @@
 package com.ruczajsoftware.workoutrival.endpoints;
 
-import com.ruczajsoftware.workoutrival.model.User;
+import com.ruczajsoftware.workoutrival.model.database.User;
 import com.ruczajsoftware.workoutrival.service.AuthorizationService;
-import com.ruczajsoftware.workoutrival.service.DatabaseService;
+import com.ruczajsoftware.workoutrival.service.JwtUtil;
+import com.ruczajsoftware.workoutrival.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(UserController.class)
+@WebMvcTest(value = UserController.class)
+@AutoConfigureMockMvc(addFilters = false) // disabling security
 public class UserControllerTest {
     private static final String BASE_URL = "/workoutRival/users";
 
@@ -26,25 +30,29 @@ public class UserControllerTest {
     private MockMvc mvc;
 
     @MockBean
-    private DatabaseService databaseService;
+    private AuthorizationService authorizationService;
 
     @MockBean
-    private AuthorizationService authorizationService;
+    private UserService userService;
+
+    @MockBean
+    private JwtUtil jwtUtil;
 
     @Test
     public void getUserShouldReturnUser()
             throws Exception {
 
-        User user = User.builder()
+        final User user = User.builder()
                 .email("test@test.com")
-                .login("test")
+                .username("test")
                 .password("test")
                 .build();
 
-        given(databaseService.getUserByLogin("test")).willReturn(user);
+        given(userService.loadUserByUsername("test")).willReturn(any());
+        given(userService.getUserByUsername("test")).willReturn(user);
 
         mvc.perform(get(BASE_URL)
-                .param("login", user.getLogin())
+                .param("username", user.getUsername())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value(user.getEmail()));

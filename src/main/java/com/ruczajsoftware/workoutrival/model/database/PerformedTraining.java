@@ -1,4 +1,4 @@
-package com.ruczajsoftware.workoutrival.model;
+package com.ruczajsoftware.workoutrival.model.database;
 
 import java.util.Date;
 
@@ -8,11 +8,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class BodyMeasurement {
+public class PerformedTraining {
 
-	private Date actualDay;
-	private float weight;
+	private TrainingModel training;
+	private Date trainingDate;
+
 }

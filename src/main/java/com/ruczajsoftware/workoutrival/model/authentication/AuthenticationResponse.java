@@ -1,6 +1,4 @@
-package com.ruczajsoftware.workoutrival.model;
-
-import java.util.List;
+package com.ruczajsoftware.workoutrival.model.authentication;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,9 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TrainingPlan {
+public class AuthenticationResponse {
 
-	private List<TrainingModel> trainingDays;
-	private String name;
-
+    private String token;
 }
