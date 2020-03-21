@@ -20,8 +20,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] EXCLUDED_PATHS = {
             "/actuator/**",
             "/v2/api-docs",
-            "/**/signIn",
-            "/**/signUp",
+            "/workoutRival/**",
             "/configuration/ui",
             "/swagger-resources/**",
             "/configuration/security",
