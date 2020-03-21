@@ -97,4 +97,14 @@ public class UserController {
         return ResponseEntity.ok(authorizationService.authenticateUser(authRequest));
     }
 
+    @ApiOperation(value = "Authenticate user (old method)")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation successful!"),
+            @ApiResponse(code = 401, message = "Unauthorized!", response = UnauthorizedException.class),
+            @ApiResponse(code = 404, message = "User not found!", response = EntityNotFoundException.class),
+    })
+    @PostMapping("/login")
+    public ResponseEntity<Boolean> login(@RequestBody AuthenticationRequest authRequest) throws UnauthorizedException, EntityNotFoundException {
+        return ResponseEntity.ok(authorizationService.authorizeUser(authRequest.getUserLogin(), authRequest.getUserPassword()));
+    }
 }

@@ -20,6 +20,15 @@ public class AuthorizationService {
 	private JwtUtil jwtUtil;
 	private UserService userService;
 
+	public boolean authorizeUser(String login, String password) throws EntityNotFoundException, UnauthorizedException {
+
+		User user = userService.getUserByUsername(login);
+		if (user.getPassword().equals("")) throw new EntityNotFoundException("No user for this login in base");
+		if (!user.getPassword().equals(password)) throw new UnauthorizedException("Bad password");
+		return password.equals(user.getPassword());
+	}
+
+
 	public AuthenticationResponse authenticateUser(AuthenticationRequest authRequest) throws UnauthorizedException, EntityNotFoundException {
 
 		final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
