@@ -31,9 +31,8 @@ public class UserController {
             @ApiResponse(code = 409, message = "User exist!", response = EntityConflictException.class)
     })
     @PostMapping("/signUp")
-    public void postUser(@RequestBody CreateUserRequest createUserRequest) throws EntityConflictException {
-        userService.addUser(createUserRequest);
-
+    public ResponseEntity<Boolean> postUser(@RequestBody CreateUserRequest createUserRequest) throws EntityConflictException {
+        return ResponseEntity.ok(userService.addUser(createUserRequest));
     }
 
     @ApiOperation(value = "Get user")
@@ -105,6 +104,6 @@ public class UserController {
     })
     @PostMapping("/login")
     public ResponseEntity<Boolean> login(@RequestBody AuthenticationRequest authRequest) throws UnauthorizedException, EntityNotFoundException {
-        return ResponseEntity.ok(authorizationService.authorizeUser(authRequest.getUserLogin(), authRequest.getUserPassword()));
+        return ResponseEntity.ok(authorizationService.authorizeUser(authRequest.getUsername(), authRequest.getPassword()));
     }
 }

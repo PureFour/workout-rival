@@ -32,7 +32,7 @@ public class AuthorizationService {
 	public AuthenticationResponse authenticateUser(AuthenticationRequest authRequest) throws UnauthorizedException, EntityNotFoundException {
 
 		final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-				authRequest.getUserLogin(), authRequest.getUserPassword());
+				authRequest.getUsername(), authRequest.getPassword());
 
 		try {
 			authenticationManager.authenticate(authenticationToken);
@@ -40,7 +40,7 @@ public class AuthorizationService {
 			throw new UnauthorizedException("Incorrect username or password!");
 		}
 
-		final User user = userService.getUserByUsername(authRequest.getUserLogin());
+		final User user = userService.getUserByUsername(authRequest.getUsername());
 
 		final String jwtToken = "Bearer " + jwtUtil.generateToken(user);
 

@@ -30,11 +30,12 @@ public class UserService implements UserDetailsService {
         throw new UsernameNotFoundException("User not found in database!");
     }
 
-    public void addUser(CreateUserRequest createUserRequest) throws EntityConflictException {
+    public boolean addUser(CreateUserRequest createUserRequest) throws EntityConflictException {
         if (userRepository.findByUsername(createUserRequest.getUsername()).isPresent()) {
             throw new EntityConflictException("User exists in database!");
         }
         userRepository.save(mapCreateUserRequestToUser(createUserRequest));
+        return true;
     }
 
     public User getUserByUsername(String username) throws EntityNotFoundException {
