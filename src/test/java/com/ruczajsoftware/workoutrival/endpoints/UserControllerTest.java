@@ -2,7 +2,7 @@ package com.ruczajsoftware.workoutrival.endpoints;
 
 import com.ruczajsoftware.workoutrival.model.database.User;
 import com.ruczajsoftware.workoutrival.service.AuthorizationService;
-import com.ruczajsoftware.workoutrival.service.JwtUtil;
+import com.ruczajsoftware.workoutrival.service.util.JwtUtil;
 import com.ruczajsoftware.workoutrival.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

@@ -67,4 +67,10 @@ management:
 arangodb:
   host: arangodb
   port: 8529
+
+email:
+  host: smtp.gmail.com
+  port: 465
+  username: workoutrivalservice@gmail.com
+  password: ${SERVICE_EMAIL_PASSWORD}
 ---

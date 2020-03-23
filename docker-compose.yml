@@ -9,6 +9,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: docker
       ARANGO_ROOT_PASSWORD: "root"
+      SERVICE_EMAIL_PASSWORD: ${SERVICE_EMAIL_PASSWORD}
     command: ["-c", "/opt/wait-for.sh arangodb:8529 && java -jar workoutRival.jar"]
     entrypoint: ["/bin/sh"]
     ports:

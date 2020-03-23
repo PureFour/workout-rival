@@ -5,6 +5,7 @@ import com.ruczajsoftware.workoutrival.exceptions.UnauthorizedException;
 import com.ruczajsoftware.workoutrival.model.database.User;
 import com.ruczajsoftware.workoutrival.model.authentication.AuthenticationRequest;
 import com.ruczajsoftware.workoutrival.model.authentication.AuthenticationResponse;
+import com.ruczajsoftware.workoutrival.service.util.JwtUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
