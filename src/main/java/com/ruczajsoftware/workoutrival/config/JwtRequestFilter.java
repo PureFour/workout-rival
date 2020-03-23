@@ -1,6 +1,6 @@
 package com.ruczajsoftware.workoutrival.config;
 
-import com.ruczajsoftware.workoutrival.service.JwtUtil;
+import com.ruczajsoftware.workoutrival.service.util.JwtUtil;
 import com.ruczajsoftware.workoutrival.service.UserService;
 import io.netty.util.internal.StringUtil;
 import lombok.AllArgsConstructor;
