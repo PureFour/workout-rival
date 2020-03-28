@@ -1,12 +1,14 @@
 package com.ruczajsoftware.workoutrival.endpoints;
 
-import com.ruczajsoftware.workoutrival.exceptions.EntityConflictException;
-import com.ruczajsoftware.workoutrival.exceptions.EntityNotFoundException;
-import com.ruczajsoftware.workoutrival.exceptions.UnauthorizedException;
+import com.ruczajsoftware.workoutrival.model.exceptions.BadRequestException;
+import com.ruczajsoftware.workoutrival.model.exceptions.EntityConflictException;
+import com.ruczajsoftware.workoutrival.model.exceptions.EntityNotFoundException;
+import com.ruczajsoftware.workoutrival.model.exceptions.UnauthorizedException;
 import com.ruczajsoftware.workoutrival.model.authentication.AuthenticationRequest;
 import com.ruczajsoftware.workoutrival.model.authentication.AuthenticationResponse;
 import com.ruczajsoftware.workoutrival.model.database.User;
 import com.ruczajsoftware.workoutrival.model.web.CreateUserRequest;
+import com.ruczajsoftware.workoutrival.model.web.UpdateUserPasswordRequest;
 import com.ruczajsoftware.workoutrival.service.AuthorizationService;
 import com.ruczajsoftware.workoutrival.service.UserService;
 import io.swagger.annotations.*;
@@ -31,7 +33,7 @@ public class UserController {
             @ApiResponse(code = 409, message = "User exist!", response = EntityConflictException.class)
     })
     @PostMapping("/signUp")
-    public ResponseEntity<Boolean> postUser(@RequestBody CreateUserRequest createUserRequest) throws EntityConflictException {
+    public ResponseEntity<Boolean> postUser(@RequestBody CreateUserRequest createUserRequest) throws EntityConflictException, BadRequestException, EntityNotFoundException {
         return ResponseEntity.ok(userService.addUser(createUserRequest));
     }
 
@@ -47,6 +49,19 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserByUsername(username));
     }
 
+    @ApiOperation(value = "Reset user password")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Email with reset PIN sent!"),
+            @ApiResponse(code = 400, message = "Incorrect email", response = BadRequestException.class)
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Authorization token (starts with 'Bearer')", dataType = "string", paramType = "header") })
+    @PostMapping("resetPassword")
+    public ResponseEntity<Void> resetPassword(@RequestParam String email) throws BadRequestException, EntityNotFoundException {
+        userService.resetPassword(email);
+        return ResponseEntity.ok().build();
+    }
+
     @ApiOperation(value = "Update user password")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Password updated!"),
@@ -56,8 +71,8 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "Authorization token (starts with 'Bearer')", dataType = "string", paramType = "header") })
     @PutMapping("/password")
-    public void updateUserPassword(@RequestParam String username, @RequestParam String password) throws EntityNotFoundException, EntityConflictException {
-        userService.updateUserPassword(username, password);
+    public void updateUserPassword(@RequestBody UpdateUserPasswordRequest updateUserPasswordRequest) throws EntityNotFoundException, EntityConflictException, BadRequestException {
+        userService.updateUserPassword(updateUserPasswordRequest);
     }
 
     @ApiOperation(value = "Update user email")
@@ -69,7 +84,7 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "Authorization token (starts with 'Bearer')", dataType = "string", paramType = "header") })
     @PutMapping("/email")
-    public void updateUserEmail(@RequestParam String username, @RequestParam(name="New email") String email) throws EntityNotFoundException, EntityConflictException {
+    public void updateUserEmail(@RequestParam String username, @RequestParam(name="New email") String email) throws EntityNotFoundException, EntityConflictException, BadRequestException {
         userService.updateUserEmail(username, email);
     }
 
