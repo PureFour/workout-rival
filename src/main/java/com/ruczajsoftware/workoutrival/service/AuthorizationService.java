@@ -1,7 +1,8 @@
 package com.ruczajsoftware.workoutrival.service;
 
-import com.ruczajsoftware.workoutrival.exceptions.EntityNotFoundException;
-import com.ruczajsoftware.workoutrival.exceptions.UnauthorizedException;
+import com.ruczajsoftware.workoutrival.model.exceptions.EntityNotFoundException;
+import com.ruczajsoftware.workoutrival.model.exceptions.ExceptionMessages;
+import com.ruczajsoftware.workoutrival.model.exceptions.UnauthorizedException;
 import com.ruczajsoftware.workoutrival.model.database.User;
 import com.ruczajsoftware.workoutrival.model.authentication.AuthenticationRequest;
 import com.ruczajsoftware.workoutrival.model.authentication.AuthenticationResponse;
@@ -24,8 +25,8 @@ public class AuthorizationService {
 	public boolean authorizeUser(String login, String password) throws EntityNotFoundException, UnauthorizedException {
 
 		User user = userService.getUserByUsername(login);
-		if (user.getPassword().equals("")) throw new EntityNotFoundException("No user for this login in base");
-		if (!user.getPassword().equals(password)) throw new UnauthorizedException("Bad password");
+		if (user.getPassword().equals("")) throw new EntityNotFoundException(ExceptionMessages.USER_NOT_FOUND);
+		if (!user.getPassword().equals(password)) throw new UnauthorizedException(ExceptionMessages.INCORRECT_CREDENTIALS);
 		return password.equals(user.getPassword());
 	}
 
@@ -38,7 +39,7 @@ public class AuthorizationService {
 		try {
 			authenticationManager.authenticate(authenticationToken);
 		} catch (BadCredentialsException e) {
-			throw new UnauthorizedException("Incorrect username or password!");
+			throw new UnauthorizedException(ExceptionMessages.INCORRECT_CREDENTIALS);
 		}
 
 		final User user = userService.getUserByUsername(authRequest.getUsername());

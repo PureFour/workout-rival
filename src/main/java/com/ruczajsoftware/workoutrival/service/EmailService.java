@@ -2,7 +2,10 @@ package com.ruczajsoftware.workoutrival.service;
 
 import com.ruczajsoftware.workoutrival.config.EmailConfiguration;
 import com.ruczajsoftware.workoutrival.model.email.EmailTemplate;
+import com.ruczajsoftware.workoutrival.model.email.EmailTemplates;
+import com.ruczajsoftware.workoutrival.service.util.Bundle;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
@@ -11,14 +14,29 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Locale;
 
 @Service
+@Slf4j
 @AllArgsConstructor
 public class EmailService {
 
     private EmailConfiguration configuration;
 
-    public void sendTextEmail(EmailTemplate emailTemplate) throws MessagingException {
+    public void sendPasswordResetPinToUser(String username, String userEmail, String pin) {
+        final EmailTemplate emailTemplate = EmailTemplate.builder()
+                .email(userEmail)
+                .subject("Password Reset PIN")
+                .payload(Bundle.getEmailTemplate(Locale.ENGLISH, EmailTemplates.RESET_PASSWORD.getKey(), username, pin))
+                .build();
+        try {
+            sendTextEmail(emailTemplate);
+        } catch (MessagingException e) {
+            log.error("Sending email error: " + e);
+        }
+    }
+
+    private void sendTextEmail(EmailTemplate emailTemplate) throws MessagingException {
         Session session = configuration.getSession();
 
         Transport transport = session.getTransport();
