@@ -18,7 +18,6 @@ public class EmailServiceTest {
     @Test
     void resetTemplateTest() {
         final String message = Bundle.getEmailTemplate(Locale.ENGLISH, "reset_password", "1234");
-        System.out.println("message: " + message);
         Assert.assertFalse(message.isEmpty());
     }
 }

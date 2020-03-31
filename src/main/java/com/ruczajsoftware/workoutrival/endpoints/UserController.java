@@ -32,7 +32,7 @@ public class UserController {
             @ApiResponse(code = 200, message = "User added!"),
             @ApiResponse(code = 409, message = "User exist!", response = EntityConflictException.class)
     })
-    @PostMapping("/signUp")
+    @PostMapping("signUp")
     public ResponseEntity<Boolean> postUser(@RequestBody CreateUserRequest createUserRequest) throws EntityConflictException, BadRequestException, EntityNotFoundException {
         return ResponseEntity.ok(userService.addUser(createUserRequest));
     }
@@ -43,7 +43,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "User not found!", response = EntityNotFoundException.class)
     })
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "Authorization token (starts with 'Bearer')", dataType = "string", paramType = "header") })
+            @ApiImplicitParam(name = "Authorization", value = "Authorization token (starts with 'Bearer')", dataType = "string", paramType = "header", required = true) })
     @GetMapping()
     public ResponseEntity<User> getUserByUsername(@RequestParam String username) throws EntityNotFoundException {
         return ResponseEntity.ok(userService.getUserByUsername(username));
@@ -54,8 +54,6 @@ public class UserController {
             @ApiResponse(code = 200, message = "Email with reset PIN sent!"),
             @ApiResponse(code = 400, message = "Incorrect email", response = BadRequestException.class)
     })
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "Authorization token (starts with 'Bearer')", dataType = "string", paramType = "header") })
     @PostMapping("resetPassword")
     public ResponseEntity<Void> resetPassword(@RequestParam String email) throws BadRequestException, EntityNotFoundException {
         userService.resetPassword(email);
@@ -68,9 +66,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "User not found!", response = EntityNotFoundException.class),
             @ApiResponse(code = 409, message = "Given password is the same!", response = EntityConflictException.class),
     })
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "Authorization token (starts with 'Bearer')", dataType = "string", paramType = "header") })
-    @PutMapping("/password")
+    @PutMapping("password")
     public void updateUserPassword(@RequestBody UpdateUserPasswordRequest updateUserPasswordRequest) throws EntityNotFoundException, EntityConflictException, BadRequestException {
         userService.updateUserPassword(updateUserPasswordRequest);
     }
@@ -82,8 +78,8 @@ public class UserController {
             @ApiResponse(code = 409, message = "Given email is the same!", response = EntityConflictException.class),
     })
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "Authorization token (starts with 'Bearer')", dataType = "string", paramType = "header") })
-    @PutMapping("/email")
+            @ApiImplicitParam(name = "Authorization", value = "Authorization token (starts with 'Bearer')", dataType = "string", paramType = "header", required = true) })
+    @PutMapping("email")
     public void updateUserEmail(@RequestParam String username, @RequestParam(name="New email") String email) throws EntityNotFoundException, EntityConflictException, BadRequestException {
         userService.updateUserEmail(username, email);
     }
@@ -94,7 +90,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "User not found!", response = EntityNotFoundException.class)
     })
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "Authorization token (starts with 'Bearer')", dataType = "string", paramType = "header") })
+            @ApiImplicitParam(name = "Authorization", value = "Authorization token (starts with 'Bearer')", dataType = "string", paramType = "header", required = true) })
     @DeleteMapping()
     public void deleteUser(@RequestParam String username) throws EntityNotFoundException {
         userService.deleteUserByUsername(username);
@@ -106,19 +102,8 @@ public class UserController {
             @ApiResponse(code = 401, message = "Unauthorized!", response = UnauthorizedException.class),
             @ApiResponse(code = 404, message = "User not found!", response = EntityNotFoundException.class),
     })
-    @PostMapping("/signIn")
+    @PostMapping("signIn")
     public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestBody AuthenticationRequest authRequest) throws UnauthorizedException, EntityNotFoundException {
         return ResponseEntity.ok(authorizationService.authenticateUser(authRequest));
-    }
-
-    @ApiOperation(value = "Authenticate user (old method)")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Operation successful!"),
-            @ApiResponse(code = 401, message = "Unauthorized!", response = UnauthorizedException.class),
-            @ApiResponse(code = 404, message = "User not found!", response = EntityNotFoundException.class),
-    })
-    @PostMapping("/login")
-    public ResponseEntity<Boolean> login(@RequestBody AuthenticationRequest authRequest) throws UnauthorizedException, EntityNotFoundException {
-        return ResponseEntity.ok(authorizationService.authorizeUser(authRequest.getUsername(), authRequest.getPassword()));
     }
 }

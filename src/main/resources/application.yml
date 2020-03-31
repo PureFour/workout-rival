@@ -64,6 +64,10 @@ management:
       exposure:
         include: "*"
 
+logging:
+  file:
+    name: logs/spring-boot-logger.log
+
 arangodb:
   host: arangodb
   port: 8529
