@@ -90,16 +90,11 @@ public class UserService implements UserDetailsService {
         emailService.sendPasswordResetPinToUser(username, userEmail, pin);
     }
 
-    private String validateEmail(String email) throws BadRequestException, EntityNotFoundException {
+    private String validateEmail(String email) throws BadRequestException {
         String regex = "^[\\w-_.+]*[\\w-_.]@([\\w]+\\.)+[\\w]+[\\w]$";
         if (!email.matches(regex)) {
             throw new BadRequestException(ExceptionMessages.EMAIL_INCORRECT);
         }
-
-        if (userRepository.findByEmail(email).isEmpty()) {
-            throw new EntityNotFoundException(ExceptionMessages.USER_NOT_FOUND);
-        }
-
         return email;
     }
 
@@ -108,7 +103,7 @@ public class UserService implements UserDetailsService {
                 user.getUsername(), user.getPassword(), new ArrayList<>());
     }
 
-    private User mapCreateUserRequestToUser(CreateUserRequest createUserRequest) throws BadRequestException, EntityNotFoundException {
+    private User mapCreateUserRequestToUser(CreateUserRequest createUserRequest) throws BadRequestException {
         return User.builder()
                 .username(createUserRequest.getUsername())
                 .password(createUserRequest.getPassword())
