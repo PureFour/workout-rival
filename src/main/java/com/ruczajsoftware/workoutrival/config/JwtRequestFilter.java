@@ -37,7 +37,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (!StringUtil.isNullOrEmpty(authorizationHeader) && authorizationHeader.startsWith(BEARER)) {
 
             jwtToken = authorizationHeader.substring(BEARER.length());
-            username = jwtUtil.extractUsername(jwtToken);
+            username = jwtUtil.extractLogin(jwtToken);
         }
 
         if (!StringUtil.isNullOrEmpty(username) && SecurityContextHolder.getContext().getAuthentication() == null) {

@@ -22,19 +22,10 @@ public class AuthorizationService {
 	private JwtUtil jwtUtil;
 	private UserService userService;
 
-	public boolean authorizeUser(String login, String password) throws EntityNotFoundException, UnauthorizedException {
-
-		User user = userService.getUserByUsername(login);
-		if (user.getPassword().equals("")) throw new EntityNotFoundException(ExceptionMessages.USER_NOT_FOUND);
-		if (!user.getPassword().equals(password)) throw new UnauthorizedException(ExceptionMessages.INCORRECT_CREDENTIALS);
-		return password.equals(user.getPassword());
-	}
-
-
 	public AuthenticationResponse authenticateUser(AuthenticationRequest authRequest) throws UnauthorizedException, EntityNotFoundException {
 
 		final UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-				authRequest.getUsername(), authRequest.getPassword());
+				authRequest.getEmail(), authRequest.getPassword());
 
 		try {
 			authenticationManager.authenticate(authenticationToken);
@@ -42,7 +33,7 @@ public class AuthorizationService {
 			throw new UnauthorizedException(ExceptionMessages.INCORRECT_CREDENTIALS);
 		}
 
-		final User user = userService.getUserByUsername(authRequest.getUsername());
+		final User user = userService.getUserByEmail(authRequest.getEmail());
 
 		final String jwtToken = "Bearer " + jwtUtil.generateToken(user);
 

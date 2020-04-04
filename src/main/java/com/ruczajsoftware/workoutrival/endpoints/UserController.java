@@ -1,5 +1,6 @@
 package com.ruczajsoftware.workoutrival.endpoints;
 
+import com.ruczajsoftware.workoutrival.model.database.PersonalData;
 import com.ruczajsoftware.workoutrival.model.exceptions.BadRequestException;
 import com.ruczajsoftware.workoutrival.model.exceptions.EntityConflictException;
 import com.ruczajsoftware.workoutrival.model.exceptions.EntityNotFoundException;
@@ -33,8 +34,13 @@ public class UserController {
             @ApiResponse(code = 409, message = "User exist!", response = EntityConflictException.class)
     })
     @PostMapping("signUp")
-    public ResponseEntity<Boolean> postUser(@RequestBody CreateUserRequest createUserRequest) throws EntityConflictException, BadRequestException, EntityNotFoundException {
-        return ResponseEntity.ok(userService.addUser(createUserRequest));
+    public ResponseEntity<AuthenticationResponse> postUser(@RequestBody CreateUserRequest createUserRequest) throws EntityConflictException, BadRequestException, UnauthorizedException, EntityNotFoundException {
+        userService.addUser(createUserRequest);
+        final AuthenticationRequest authenticationRequest = AuthenticationRequest.builder()
+                .email(createUserRequest.getEmail())
+                .password(createUserRequest.getPassword())
+                .build();
+        return ResponseEntity.ok(authorizationService.authenticateUser(authenticationRequest));
     }
 
     @ApiOperation(value = "Get user")
@@ -105,5 +111,18 @@ public class UserController {
     @PostMapping("signIn")
     public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestBody AuthenticationRequest authRequest) throws UnauthorizedException, EntityNotFoundException {
         return ResponseEntity.ok(authorizationService.authenticateUser(authRequest));
+    }
+
+    @ApiOperation(value = "Update user personalData")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Operation successful!"),
+            @ApiResponse(code = 401, message = "Unauthorized!", response = UnauthorizedException.class),
+            @ApiResponse(code = 404, message = "User not found!", response = EntityNotFoundException.class),
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "Authorization token (starts with 'Bearer')", dataType = "string", paramType = "header", required = true) })
+    @PutMapping("personalData")
+    public void updatePersonalData(@RequestParam String email, @RequestBody PersonalData personalData) throws BadRequestException, EntityNotFoundException {
+        userService.updateUserPersonalData(email, personalData);
     }
 }
