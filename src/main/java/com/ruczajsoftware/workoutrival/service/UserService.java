@@ -27,20 +27,19 @@ public class UserService implements UserDetailsService {
     private PinService pinService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.findByEmail(email);
         if (user.isPresent()) {
             return mapUserToUserDetails(user.get());
         }
         throw new UsernameNotFoundException(ExceptionMessages.USER_NOT_FOUND.getMsg());
     }
 
-    public boolean addUser(CreateUserRequest createUserRequest) throws EntityConflictException, BadRequestException, EntityNotFoundException {
+    public void addUser(CreateUserRequest createUserRequest) throws EntityConflictException, BadRequestException {
         if (userRepository.findByUsername(createUserRequest.getUsername()).isPresent()) {
             throw new EntityConflictException(ExceptionMessages.USER_CONFLICT);
         }
         userRepository.save(mapCreateUserRequestToUser(createUserRequest));
-        return true;
     }
 
     public User getUserByUsername(String username) throws EntityNotFoundException {
@@ -83,6 +82,14 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
+    public void updateUserPersonalData(String email, PersonalData personalData) throws BadRequestException, EntityNotFoundException {
+        validateEmail(email);
+        User user = this.getUserByEmail(email);
+        user.setPersonalData(personalData);
+        userRepository.deleteUserByEmail(email);
+        userRepository.save(user);
+    }
+
     public void resetPassword(String userEmail) throws BadRequestException, EntityNotFoundException {
         validateEmail(userEmail);
         final String pin = pinService.createAndSavePin(userEmail);
@@ -100,7 +107,7 @@ public class UserService implements UserDetailsService {
 
     private UserDetails mapUserToUserDetails(User user) {
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(), user.getPassword(), new ArrayList<>());
+                user.getEmail(), user.getPassword(), new ArrayList<>());
     }
 
     private User mapCreateUserRequestToUser(CreateUserRequest createUserRequest) throws BadRequestException {
