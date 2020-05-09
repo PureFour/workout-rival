@@ -2,6 +2,7 @@ package com.ruczajsoftware.workoutrival.service;
 
 import com.ruczajsoftware.workoutrival.model.database.PersonalData;
 import com.ruczajsoftware.workoutrival.model.database.User;
+import com.ruczajsoftware.workoutrival.model.database.UserBuilder;
 import com.ruczajsoftware.workoutrival.model.exceptions.BadRequestException;
 import com.ruczajsoftware.workoutrival.model.exceptions.EntityConflictException;
 import com.ruczajsoftware.workoutrival.model.exceptions.EntityNotFoundException;
@@ -22,9 +23,9 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
 
-    private UserRepository userRepository;
-    private EmailService emailService;
-    private PinService pinService;
+    private final UserRepository userRepository;
+    private final EmailService emailService;
+    private final PinService pinService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -111,7 +112,7 @@ public class UserService implements UserDetailsService {
     }
 
     private User mapCreateUserRequestToUser(CreateUserRequest createUserRequest) throws BadRequestException {
-        return User.builder()
+        return new UserBuilder()
                 .username(createUserRequest.getUsername())
                 .password(createUserRequest.getPassword())
                 .email(validateEmail(createUserRequest.getEmail()))

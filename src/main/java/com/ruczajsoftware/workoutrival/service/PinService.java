@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Service
 public class PinService {
-    private static Map<String, String> USER_PINS = new HashMap<>();
+    private static final Map<String, String> USER_PINS = new HashMap<>();
 
     public String createAndSavePin(String userEmail) {
         removeOldPins(userEmail);

@@ -2,6 +2,7 @@ package com.ruczajsoftware.workoutrival.service;
 
 import com.ruczajsoftware.workoutrival.config.EmailConfiguration;
 import com.ruczajsoftware.workoutrival.model.email.EmailTemplate;
+import com.ruczajsoftware.workoutrival.model.email.EmailTemplateBuilder;
 import com.ruczajsoftware.workoutrival.model.email.EmailTemplates;
 import com.ruczajsoftware.workoutrival.service.util.Bundle;
 import lombok.AllArgsConstructor;
@@ -21,10 +22,10 @@ import java.util.Locale;
 @AllArgsConstructor
 public class EmailService {
 
-    private EmailConfiguration configuration;
+    private final EmailConfiguration configuration;
 
     public void sendPasswordResetPinToUser(String username, String userEmail, String pin) {
-        final EmailTemplate emailTemplate = EmailTemplate.builder()
+        final EmailTemplate emailTemplate = new EmailTemplateBuilder()
                 .email(userEmail)
                 .subject("Password Reset PIN")
                 .payload(Bundle.getEmailTemplate(Locale.ENGLISH, EmailTemplates.RESET_PASSWORD.getKey(), username, pin))

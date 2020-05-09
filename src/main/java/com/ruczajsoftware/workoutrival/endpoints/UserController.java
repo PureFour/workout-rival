@@ -1,5 +1,6 @@
 package com.ruczajsoftware.workoutrival.endpoints;
 
+import com.ruczajsoftware.workoutrival.model.authentication.AuthenticationRequestBuilder;
 import com.ruczajsoftware.workoutrival.model.database.PersonalData;
 import com.ruczajsoftware.workoutrival.model.exceptions.BadRequestException;
 import com.ruczajsoftware.workoutrival.model.exceptions.EntityConflictException;
@@ -36,7 +37,7 @@ public class UserController {
     @PostMapping("signUp")
     public ResponseEntity<AuthenticationResponse> postUser(@RequestBody CreateUserRequest createUserRequest) throws EntityConflictException, BadRequestException, UnauthorizedException, EntityNotFoundException {
         userService.addUser(createUserRequest);
-        final AuthenticationRequest authenticationRequest = AuthenticationRequest.builder()
+        final AuthenticationRequest authenticationRequest = new AuthenticationRequestBuilder()
                 .email(createUserRequest.getEmail())
                 .password(createUserRequest.getPassword())
                 .build();

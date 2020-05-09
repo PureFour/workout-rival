@@ -5,7 +5,6 @@ import com.arangodb.ArangoDatabase;
 import com.arangodb.entity.CollectionEntity;
 import com.arangodb.springframework.annotation.EnableArangoRepositories;
 import com.arangodb.springframework.config.ArangoConfiguration;
-import com.ruczajsoftware.workoutrival.model.database.DbCollections;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +12,8 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.ruczajsoftware.workoutrival.model.database.DbCollectionsKt.getDbCollections;
 
 @Configuration
 @EnableArangoRepositories(basePackages = {"com.ruczajsoftware.workoutrival"})
@@ -55,7 +56,7 @@ public class ArangoDBConfig implements ArangoConfiguration {
                 .map(CollectionEntity::getName)
                 .collect(Collectors.toList());
 
-        DbCollections.getValues().forEach(
+        getDbCollections().forEach(
                 collectionName -> {
                     if (!dbCollectionsNames.contains(collectionName)) {
                         database.createCollection(collectionName);

@@ -33,9 +33,15 @@ apply plugin: 'idea'
 repositories {
     mavenCentral()
     jcenter()
+    maven {
+        url "https://mymavenrepo.com/repo/tL5TrXOUxwJdrf1R1kIu/"
+    }
 }
 
 dependencies {
+    implementation 'com.ruczajsoftware.workoutrival:common-data:0.0.17'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-mail'

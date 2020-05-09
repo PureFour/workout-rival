@@ -30,8 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-ui.html",
             "/webjars/**"};
 
-    private UserService userService;
-    private JwtRequestFilter jwtRequestFilter;
+    private final UserService userService;
+    private final JwtRequestFilter jwtRequestFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

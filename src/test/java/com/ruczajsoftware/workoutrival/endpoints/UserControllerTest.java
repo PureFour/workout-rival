@@ -1,6 +1,10 @@
 package com.ruczajsoftware.workoutrival.endpoints;
 
+import com.ruczajsoftware.workoutrival.model.database.PersonalData;
+import com.ruczajsoftware.workoutrival.model.database.TrainingModel;
+import com.ruczajsoftware.workoutrival.model.database.TrainingPlan;
 import com.ruczajsoftware.workoutrival.model.database.User;
+import com.ruczajsoftware.workoutrival.model.database.UserBuilder;
 import com.ruczajsoftware.workoutrival.service.AuthorizationService;
 import com.ruczajsoftware.workoutrival.service.util.JwtUtil;
 import com.ruczajsoftware.workoutrival.service.UserService;
@@ -13,6 +17,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -42,10 +48,14 @@ public class UserControllerTest {
     public void getUserShouldReturnUser()
             throws Exception {
 
-        final User user = User.builder()
+        final User user = new UserBuilder()
                 .email("test@test.com")
                 .username("test")
                 .password("test")
+                .bodyMeasurements(List.of())
+                .personalData(new PersonalData())
+                .trainingPlans(List.of())
+                .definedTrainings(List.of())
                 .build();
 
         given(userService.loadUserByUsername("test")).willReturn(any());
