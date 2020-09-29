@@ -122,4 +122,20 @@ public class UserService implements UserDetailsService {
                 .trainingPlans(new ArrayList<>())
                 .build();
     }
+
+    public float getUserBMI(String username) throws EntityNotFoundException, BadRequestException {
+        User user = getUserByUsername(username);
+        final PersonalData personalData = user.getPersonalData();
+        final float weight = personalData.getWeight();
+        final float height = convertCentimetersToMeters(personalData.getHeight());
+        if (weight == 0 || height == 0) {
+            throw new BadRequestException(ExceptionMessages.valueOf("User data invalid"));
+        }
+        return weight / (height * height);
+    }
+
+    private float convertCentimetersToMeters(float centimeters){
+        final float meters = centimeters / 100f;
+        return (float)Math.round(meters * 100) / 100f;
+    }
 }
