@@ -147,7 +147,8 @@ public class UserController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "Authorization token (starts with 'Bearer')", dataType = "string", paramType = "header", required = true) })
     @GetMapping("getBMI")
-    public ResponseEntity<Float> getUserBMI(@RequestParam String username) throws EntityNotFoundException, BadRequestException {
-        return ResponseEntity.ok(userService.getUserBMI(username));
+    public ResponseEntity<Float> getUserBMI(@RequestParam String username) throws EntityNotFoundException {
+        User user = userService.getUserByUsername(username);
+        return ResponseEntity.ok(userService.calculateBMIByPersonalData(user.getPersonalData()));
     }
 }

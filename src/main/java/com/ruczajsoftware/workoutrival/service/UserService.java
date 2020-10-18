@@ -10,6 +10,7 @@ import com.ruczajsoftware.workoutrival.model.exceptions.ExceptionMessages;
 import com.ruczajsoftware.workoutrival.model.web.CreateUserRequest;
 import com.ruczajsoftware.workoutrival.model.web.UpdateUserPasswordRequest;
 import com.ruczajsoftware.workoutrival.repositories.UserRepository;
+import com.ruczajsoftware.workoutrival.service.util.MathUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -123,19 +124,13 @@ public class UserService implements UserDetailsService {
                 .build();
     }
 
-    public float getUserBMI(String username) throws EntityNotFoundException, BadRequestException {
-        User user = getUserByUsername(username);
-        final PersonalData personalData = user.getPersonalData();
+    public float calculateBMIByPersonalData(PersonalData personalData) {
         final float weight = personalData.getWeight();
-        final float height = convertCentimetersToMeters(personalData.getHeight());
+        final float height = MathUtil.convertCentimetersToMeters(personalData.getHeight());
         if (weight == 0 || height == 0) {
-            throw new BadRequestException(ExceptionMessages.valueOf("User data invalid"));
+            throw new IllegalArgumentException("User data invalid");
         }
         return weight / (height * height);
     }
 
-    private float convertCentimetersToMeters(float centimeters){
-        final float meters = centimeters / 100f;
-        return (float)Math.round(meters * 100) / 100f;
-    }
 }
